@@ -1,20 +1,16 @@
 export default async function handler(req, res) {
+  const target = "https://uk17freenew.listen2myradio.com/live.mp3?typeportmount=s1_6707_stream_865432299";
+
   try {
-    const url = "https://api-cpe-test.sunat.gob.pe/v1/contribuyente/enviossp";
-    
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        ...req.headers,
-        host: undefined  // MUY IMPORTANTE
-      },
-      body: req.body
-    });
+    const response = await fetch(target);
 
-    const data = await response.text();
+    res.setHeader("Content-Type", "audio/mpeg");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Cache-Control", "no-cache");
 
-    res.status(response.status).send(data);
-  } catch (error) {
-    res.status(500).json({ error: "Proxy error", detail: error.message });
+    // Stream directo al cliente
+    response.body.pipe(res);
+  } catch (e) {
+    res.status(500).send("Proxy error: " + e.toString());
   }
 }
