@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/stream",
-      "destination": "/api/proxy"
+      "destination": "/api/proxy.js"
     }
   ]
 }
